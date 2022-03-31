@@ -8,11 +8,13 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3234375" />
         <entry key="app/src/main/res/layout/app_bar_main.xml" value="0.3234375" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.3234375" />
+        <entry key="app/src/main/res/layout/fragment_absent.xml" value="0.32395833333333335" />
         <entry key="app/src/main/res/layout/fragment_all.xml" value="0.32395833333333335" />
         <entry key="app/src/main/res/layout/fragment_blank.xml" value="0.32395833333333335" />
         <entry key="app/src/main/res/layout/fragment_excluir_blank.xml" value="0.32395833333333335" />
         <entry key="app/src/main/res/layout/fragment_gallery.xml" value="0.3234375" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.3234375" />
+        <entry key="app/src/main/res/layout/fragment_presence.xml" value="0.32395833333333335" />
         <entry key="app/src/main/res/layout/fragment_slideshow.xml" value="0.3234375" />
         <entry key="app/src/main/res/layout/nav_header_main.xml" value="0.3234375" />
         <entry key="app/src/main/res/layout/row_guest.xml" value="0.32395833333333335" />

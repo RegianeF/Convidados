@@ -10,15 +10,30 @@ import com.example.convidados.service.repository.GuestRepository
 class GuestFormViewModel(application: Application) : AndroidViewModel(application) {
     //tem que usar AndroidViewModel pq não tem context
 
-    private val context = application.applicationContext //essa variavel está aqui para pode passar o context ali embaixo
+    private val context =
+        application.applicationContext //essa variavel está aqui para pode passar o context ali embaixo
+
     //que foi passado através do application por AndroidViewMode
     private val guestRepository: GuestRepository = GuestRepository.getInstance(context)
 
     private var _saveGuest = MutableLiveData<Boolean>()
-    val saveGuest : LiveData<Boolean> = _saveGuest
+    val saveGuest: LiveData<Boolean> = _saveGuest
 
-    fun save(name: String, presence: Boolean){
-        val guest = GuestModel(name= name, presence= presence)
-        _saveGuest.value = guestRepository.save(guest)
+    private var _guest = MutableLiveData<GuestModel>()
+    val guest: LiveData<GuestModel> = _guest
+
+    fun save(id: Int, name: String, presence: Boolean) {
+        val guest = GuestModel(name, presence, id)
+
+        if (id == 0) {
+            _saveGuest.value = guestRepository.save(guest)
+        } else {
+            _saveGuest.value = guestRepository.update(guest)
+        }
     }
+
+    fun load(id: Int) {
+        _guest.value = guestRepository.getGuest(id)
+    }
+
 }
