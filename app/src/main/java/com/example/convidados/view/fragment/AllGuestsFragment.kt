@@ -1,5 +1,6 @@
-package com.example.convidados.view
+package com.example.convidados.view.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,15 +10,18 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.convidados.databinding.FragmentAllBinding
+import com.example.convidados.service.constants.GuestConstants
+import com.example.convidados.view.activity.GuestFromActivity
 import com.example.convidados.view.adapter.GuestAdapter
-import com.example.convidados.viewModel.AllGuestsViewModel
+import com.example.convidados.view.listener.GuestListener
+import com.example.convidados.viewModel.GuestsViewModel
 
 class AllGuestsFragment : Fragment() {
-
     //listagem:
 
+    private lateinit var mListener: GuestListener
     private val adapter: GuestAdapter = GuestAdapter()
-    private lateinit var allGuestsViewModel: AllGuestsViewModel
+    private lateinit var guestsViewModel: GuestsViewModel
     private var _binding: FragmentAllBinding? = null
 
     // This property is only valid between onCreateView and
@@ -27,7 +31,7 @@ class AllGuestsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        allGuestsViewModel = ViewModelProvider(this).get(AllGuestsViewModel::class.java)
+        guestsViewModel = ViewModelProvider(this).get(GuestsViewModel::class.java)
 
         _binding = FragmentAllBinding.inflate(inflater, container, false)
 
@@ -44,6 +48,22 @@ class AllGuestsFragment : Fragment() {
         //cria uma classe adapter
         recycler.adapter = adapter//cola entre elementos e dados
 
+        mListener = object : GuestListener {
+            override fun onClick(id: Int) {
+                val intent = Intent(context, GuestFromActivity::class.java)
+                val bundle = Bundle()
+                bundle.putInt(GuestConstants.GUESTID, id)
+                intent.putExtras(bundle)
+                startActivity(intent)
+            }
+
+            override fun onDelete(id: Int) {
+                guestsViewModel.delete(id)
+                guestsViewModel.load(GuestConstants.FILTER.EMPTY)
+            }
+        }
+        adapter.attachListener(mListener)
+
         observer()
         /*allGuestsViewModel.load()
         * quando estava sendo chamando aqui a pagina não carregaa a lista
@@ -54,12 +74,12 @@ class AllGuestsFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        allGuestsViewModel.load()
+        guestsViewModel.load(GuestConstants.FILTER.EMPTY)
         //responsavel por listar os convidados, com a lista recarregando
     }
 
     private fun observer() {
-        allGuestsViewModel.guestList.observe(viewLifecycleOwner, Observer {
+        guestsViewModel.guestList.observe(viewLifecycleOwner, Observer {
             adapter.updateGuests(it)
             //notifyDataSetChanged = Notify any registered observers that the data set has changed.
         })

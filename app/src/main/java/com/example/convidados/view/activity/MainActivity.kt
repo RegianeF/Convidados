@@ -1,4 +1,4 @@
-package com.example.convidados.view
+package com.example.convidados.view.activity
 
 import android.content.Intent
 import android.os.Bundle
